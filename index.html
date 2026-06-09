@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>recess — go outside again</title>
+<meta name="description" content="recess is the bell that gets you off your phone and back into the real world. Real plans, real people, real life." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --sky-top:#3a8fe6;
+    --sky-mid:#6fb4f2;
+    --sky-low:#a9d6fb;
+    --ink:#16314f;
+    --ink-soft:#3c5a7a;
+    --glass:rgba(255,255,255,.45);
+    --glass-strong:rgba(255,255,255,.62);
+    --glass-line:rgba(255,255,255,.75);
+    --shadow:0 18px 50px rgba(28,68,120,.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--ink);
+    /* real photographic sky behind every section */
+    background:#3b9bff url('assets/sky-bg.png') center top / cover no-repeat fixed;
+    min-height:100vh;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Fredoka',sans-serif;font-weight:600;letter-spacing:-.01em}
+
+  /* ---------- clouds ---------- */
+  .clouds{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .cloud{
+    position:absolute;background:rgba(255,255,255,.85);border-radius:50%;
+    filter:blur(22px);opacity:.7;
+  }
+  .cloud::before,.cloud::after{content:"";position:absolute;background:inherit;border-radius:50%}
+  .c1{width:320px;height:120px;top:12%;left:-6%;animation:drift 60s linear infinite}
+  .c2{width:240px;height:90px;top:30%;right:-8%;animation:drift 80s linear infinite reverse}
+  .c3{width:420px;height:150px;top:60%;left:8%;opacity:.5;animation:drift 95s linear infinite}
+  .c4{width:200px;height:80px;top:78%;right:14%;opacity:.55;animation:drift 70s linear infinite reverse}
+  @keyframes drift{from{transform:translateX(-40px)}to{transform:translateX(40px)}}
+
+  /* ---------- sparkles ---------- */
+  .spark{position:absolute;color:#fff;font-family:'Fredoka';pointer-events:none;
+    text-shadow:0 0 12px rgba(255,255,255,.9);animation:tw 3.5s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+
+  /* ---------- layout ---------- */
+  .wrap{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:50;padding:14px 0}
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;gap:18px;
+    background:var(--glass);border:1px solid var(--glass-line);
+    backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    border-radius:22px;padding:10px 16px;box-shadow:var(--shadow);
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Fredoka';font-weight:600;font-size:20px}
+  .brand img{height:30px;width:auto;filter:drop-shadow(0 3px 5px rgba(40,80,140,.35))}
+  .nav-links{display:flex;align-items:center;gap:26px}
+  .nav-links a{color:var(--ink);text-decoration:none;font-weight:500;font-size:15px;opacity:.85}
+  .nav-links a:hover{opacity:1}
+  .btn{
+    font-family:'Fredoka';font-weight:600;border:none;cursor:pointer;text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;border-radius:999px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .btn-glass{
+    background:var(--glass-strong);border:1px solid var(--glass-line);color:var(--ink);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    padding:11px 20px;font-size:15px;box-shadow:0 8px 22px rgba(28,68,120,.18);
+  }
+  .btn-solid{
+    background:var(--ink);color:#fff;padding:14px 28px;font-size:17px;
+    box-shadow:0 14px 30px rgba(22,49,79,.4);
+  }
+  @media(max-width:760px){.nav-links{display:none}}
+
+  /* ---------- hero (animated collage) ---------- */
+  .hero-sky{
+    position:relative;z-index:2;
+    background:transparent;          /* let the page sky show through the top gap */
+    padding-bottom:30px;overflow:hidden;
+  }
+  /* fixed top nav over the sky */
+  .topnav{position:fixed;top:16px;left:18px;right:18px;z-index:60;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 12px 10px 22px;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.45);
+    border-radius:20px;
+    backdrop-filter:blur(16px) saturate(170%);
+    -webkit-backdrop-filter:blur(16px) saturate(170%);
+    box-shadow:0 12px 34px rgba(28,68,120,.2);}
+  .topnav .brand img{height:30px;width:auto;filter:drop-shadow(0 3px 6px rgba(28,68,120,.4))}
+  .topnav .links{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:38px}
+  .topnav .links a{color:#fff;text-decoration:none;font-family:'Fredoka';font-weight:500;
+    font-size:17px;letter-spacing:.01em;text-shadow:0 2px 8px rgba(24,60,120,.45);opacity:.95;
+    transition:opacity .15s ease}
+  .topnav .links a:hover{opacity:1;text-shadow:0 2px 12px rgba(255,255,255,.6)}
+  .nav-cta{
+    font-family:'Fredoka';font-weight:600;font-size:16px;text-decoration:none;color:var(--ink);
+    background:#fff;border:1px solid rgba(255,255,255,.9);border-radius:999px;
+    padding:11px 22px;box-shadow:0 10px 26px rgba(28,68,120,.28);
+    transition:transform .15s ease, box-shadow .15s ease;white-space:nowrap}
+  .nav-cta:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(28,68,120,.34)}
+  @media(max-width:780px){.topnav .links{display:none}.topnav{padding:14px 16px}}
+
+  /* photographic-feel cumulus puffs */
+  .hero-clouds{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+  .puff{position:absolute;border-radius:50%;background:#fff;filter:blur(26px);opacity:.85}
+  .puff.s{filter:blur(16px);opacity:.7}
+  .pa{width:300px;height:110px;top:6%;left:4%;animation:drift 50s linear infinite}
+  .pb{width:230px;height:90px;top:14%;right:8%;animation:drift 64s linear infinite reverse}
+  .pc{width:360px;height:130px;top:55%;left:10%;opacity:.6;animation:drift 80s linear infinite}
+  .pd{width:200px;height:80px;top:46%;right:5%;opacity:.7;animation:drift 58s linear infinite reverse}
+  .pe{width:280px;height:100px;top:74%;left:46%;opacity:.65;animation:drift 72s linear infinite}
+  .pf{width:160px;height:64px;top:30%;left:40%;opacity:.5;animation:drift 90s linear infinite reverse}
+
+  /* full-width hero, natural height — whole collage shown, nothing cropped */
+  .hero-img{position:relative;z-index:3;display:block;width:100vw;height:auto}
+
+  /* the collage stage keeps a fixed 3:2 frame so % positions track the reference */
+  .stage{position:relative;z-index:3;width:100%;max-width:1500px;margin:0 auto;
+    aspect-ratio:1536/1024;}
+  .item{position:absolute;transform:translate(-50%,-50%);
+    filter:drop-shadow(0 16px 24px rgba(28,64,120,.35));
+    animation:bobf var(--dur,7s) ease-in-out infinite;animation-delay:var(--del,0s);will-change:transform}
+  .item img{width:100%;height:auto;display:block}
+  @keyframes bobf{
+    0%,100%{transform:translate(-50%,-50%) translateY(0) rotate(var(--r,0deg))}
+    50%{transform:translate(-50%,-50%) translateY(var(--amp,-16px)) rotate(calc(var(--r,0deg) + 2deg))}}
+
+  /* positions + sizes mirror the reference layout (width = % of stage) */
+  .i-disco   {left:13%;top:23%;width:20%;--r:-3deg;--dur:7.5s;--del:0s;--amp:-18px}
+  .i-jump    {left:37%;top:18%;width:21%;--r:4deg; --dur:8s;  --del:.6s;--amp:-14px}
+  .i-walkie  {left:59%;top:22%;width:12%;--r:-4deg;--dur:6.5s;--del:1.2s;--amp:-20px}
+  .i-compass {left:85%;top:28%;width:18%;--r:5deg; --dur:7s;  --del:.3s;--amp:-16px}
+  .i-mark    {left:50%;top:51%;width:62%;--r:0deg; --dur:6s;  --del:0s; --amp:-12px;z-index:4}
+  .i-polaroid{left:16%;top:77%;width:26%;--r:3deg; --dur:7.8s;--del:1s; --amp:-15px}
+  .i-firefly {left:39%;top:81%;width:18%;--r:-3deg;--dur:8.5s;--del:1.8s;--amp:-13px}
+  .i-ticket  {left:61%;top:83%;width:24%;--r:-5deg;--dur:7.2s;--del:.5s;--amp:-17px}
+  .i-juicebox{left:86%;top:79%;width:15%;--r:4deg; --dur:6.8s;--del:1.5s;--amp:-19px}
+
+  /* doodle sparkles */
+  .doodle{position:absolute;z-index:3;pointer-events:none;font-family:'Fredoka';
+    animation:tw 3.2s ease-in-out infinite;text-shadow:0 0 10px rgba(255,255,255,.6)}
+
+  .hero-cta{position:relative;z-index:3;text-align:center;padding:8px 0 18px}
+  .hero-cta h1{
+    font-size:clamp(30px,5vw,56px);line-height:1.02;color:#fff;margin:0 auto;
+    max-width:16ch;text-shadow:0 4px 24px rgba(24,60,120,.45);font-weight:700;
+  }
+  .hero-cta p.sub{
+    margin:18px auto 0;max-width:48ch;font-size:clamp(16px,2.1vw,20px);
+    color:#f3f9ff;line-height:1.55;text-shadow:0 2px 12px rgba(24,60,120,.4);
+  }
+  .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+  @media(prefers-reduced-motion:reduce){.item,.puff,.doodle,.spark,.cloud{animation:none!important}}
+
+  /* ---------- sections ---------- */
+  section{position:relative;z-index:2;padding:70px 0}
+  .eyebrow{font-family:'Fredoka';font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    font-size:13px;color:#fff;opacity:.95;text-shadow:0 2px 8px rgba(30,70,130,.4)}
+  .section-head{text-align:center;max-width:660px;margin:0 auto 44px}
+  .section-head h2{font-size:clamp(28px,4vw,44px);color:#fff;margin-top:10px;
+    text-shadow:0 4px 20px rgba(24,60,120,.4)}
+  .section-head p{margin-top:14px;color:#eaf4ff;font-size:18px;line-height:1.6;
+    text-shadow:0 2px 10px rgba(24,60,120,.3)}
+
+  .card{
+    background:var(--glass);border:1px solid var(--glass-line);border-radius:26px;
+    backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);
+    box-shadow:var(--shadow);padding:30px;
+  }
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:820px){.grid-3{grid-template-columns:1fr}}
+  .card .ico{width:64px;height:64px;display:grid;place-items:center;
+    background:var(--glass-strong);border:1px solid var(--glass-line);border-radius:18px;
+    font-size:30px;margin-bottom:16px;box-shadow:0 8px 18px rgba(28,68,120,.16)}
+  .card h3{font-size:22px;margin-bottom:8px}
+  .card p{color:var(--ink-soft);font-size:15.5px;line-height:1.6}
+
+  /* how it works steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:820px){.steps{grid-template-columns:1fr}}
+  .step{position:relative}
+  .step .num{font-family:'Fredoka';font-weight:700;font-size:46px;color:#fff;
+    text-shadow:0 4px 14px rgba(24,60,120,.4);line-height:1}
+  .step h3{color:#fff;margin:6px 0 6px;font-size:21px;text-shadow:0 2px 10px rgba(24,60,120,.35)}
+  .step p{color:#eaf4ff;font-size:15.5px;line-height:1.55;text-shadow:0 1px 8px rgba(24,60,120,.25)}
+
+  /* activities marquee of icons */
+  .activities{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
+  .chip{display:flex;align-items:center;gap:10px;
+    background:var(--glass);border:1px solid var(--glass-line);border-radius:999px;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    padding:10px 18px 10px 12px;box-shadow:0 8px 20px rgba(28,68,120,.16);
+    font-family:'Fredoka';font-weight:500;font-size:16px}
+  .chip img{width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(30,70,140,.3))}
+
+  /* big closer */
+  .closer{text-align:center}
+  .closer .card{padding:56px 30px;max-width:760px;margin:0 auto}
+  .closer h2{font-size:clamp(28px,4.4vw,46px);margin-bottom:10px}
+  .closer p{color:var(--ink-soft);font-size:18px;max-width:48ch;margin:0 auto 26px;line-height:1.55}
+
+  footer{position:relative;z-index:2;text-align:center;padding:40px 0 56px;color:#eaf4ff}
+  footer .brand{justify-content:center;color:#fff;margin-bottom:10px}
+  footer a{color:#fff;text-decoration:none;opacity:.9;margin:0 10px}
+  footer .fine{font-size:13px;opacity:.7;margin-top:14px}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="#" class="brand"><img src="assets/recess-wordmark.png" alt="recess" /></a>
+  <a href="#get" class="nav-cta">Download app →</a>
+</nav>
+
+<!-- HERO: reference collage image -->
+<header class="hero-sky">
+  <img class="hero-img" src="assets/hero-collage.png"
+    alt="recess — a disco ball, jump rope, walkie talkie, compass, Polaroid camera, firefly jar, a Good Times Admit One ticket and a recess fruit-punch juice box floating around a chrome balloon recess wordmark in a cloudy blue sky" />
+
+  <div class="wrap">
+    <div class="hero-cta">
+      <h1>Go outside again.</h1>
+      <p class="sub">recess gets you off the feed and back into the world — real plans,
+        real people, real life. The fun part of being a kid, for the rest of your life.</p>
+      <div class="cta-row">
+        <a href="#get" class="btn btn-solid">Get early access</a>
+        <a href="#how" class="btn btn-glass">See how it works</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- WHAT -->
+<section id="what" class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">remember this?</p>
+    <h2>Tech was supposed to be fun.</h2>
+    <p>Somewhere along the way scrolling replaced playing. recess is a swing back —
+      built to send you out the door, not keep you on the couch.</p>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="ico">🌞</div>
+      <h3>Touch grass, literally</h3>
+      <p>Every day recess nudges you toward something real and nearby — a park run,
+        a boba walk, a sunset you'd otherwise scroll past.</p>
+    </div>
+    <div class="card">
+      <div class="ico">🫶</div>
+      <h3>Friends, in person</h3>
+      <p>Pull your crew together in a tap. recess turns "we should hang sometime"
+        into plans that actually happen this week.</p>
+    </div>
+    <div class="card">
+      <div class="ico">⭐️</div>
+      <h3>Play, not perform</h3>
+      <p>No likes, no follower count, no highlight reel. Just memories you collect
+        for yourself and the people who were there.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how" class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">how it works</p>
+    <h2>Three steps to a better afternoon</h2>
+  </div>
+  <div class="steps">
+    <div class="step card" style="background:rgba(255,255,255,.18)">
+      <div class="num">1</div>
+      <h3>The bell rings</h3>
+      <p>recess pings you with a little quest — something fun to do, made for where
+        you are and who's around.</p>
+    </div>
+    <div class="step card" style="background:rgba(255,255,255,.18)">
+      <div class="num">2</div>
+      <h3>Grab your people</h3>
+      <p>Send it to friends with one tap. Solo or squad, recess finds the move and
+        gets everyone out the door.</p>
+    </div>
+    <div class="step card" style="background:rgba(255,255,255,.18)">
+      <div class="num">3</div>
+      <h3>Live it, keep it</h3>
+      <p>Show up, do the thing, snap a polaroid. recess stitches your day into a
+        little time capsule that's just yours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLAY -->
+<section id="play" class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">what you'll do</p>
+    <h2>Recess is whatever play means to you</h2>
+    <p>A few hundred ways to spend an afternoon — and more every week.</p>
+  </div>
+  <div class="activities">
+    <div class="chip"><img src="assets/disco.png" alt="">dance party</div>
+    <div class="chip"><img src="assets/jumprope.png" alt="">backyard games</div>
+    <div class="chip"><img src="assets/basketball.png" alt="">pickup hoops</div>
+    <div class="chip"><img src="assets/boba.png" alt="">boba run</div>
+    <div class="chip"><img src="assets/bike.png" alt="">golden-hour ride</div>
+    <div class="chip"><img src="assets/firefly.png" alt="">firefly catching</div>
+    <div class="chip"><img src="assets/polaroid.png" alt="">photo walk</div>
+    <div class="chip"><img src="assets/ticket.png" alt="">surprise outing</div>
+    <div class="chip"><img src="assets/walkie.png" alt="">scavenger hunt</div>
+  </div>
+</section>
+
+<!-- CLOSER / GET -->
+<section id="get" class="wrap closer">
+  <div class="card">
+    <p class="eyebrow" style="color:var(--ink-soft);text-shadow:none">early access</p>
+    <h2>Recess is almost ready to ring.</h2>
+    <p>Be first in line when we open the gates. No spam — just one note when it's
+      time to come out and play.</p>
+    <form class="cta-row" onsubmit="event.preventDefault();this.querySelector('input').value='';this.querySelector('button').textContent='You\'re on the list 🎈'">
+      <input type="email" required placeholder="you@email.com"
+        style="font-family:'Inter';font-size:16px;padding:14px 20px;border-radius:999px;border:1px solid var(--glass-line);background:rgba(255,255,255,.7);min-width:240px;outline:none;color:var(--ink)" />
+      <button class="btn btn-solid" type="submit">Get early access</button>
+    </form>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="brand"><img src="assets/recess-wordmark.png" alt="recess" style="height:34px"/></div>
+  <p>go outside again.</p>
+  <div style="margin-top:12px">
+    <a href="#what">the idea</a><a href="#how">how it works</a><a href="#get">early access</a>
+  </div>
+  <p class="fine">© 2026 recess · made to be put down.</p>
+</footer>
+
+</body>
+</html>

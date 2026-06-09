@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["CJ3LPYUPK7.com.kaysiradek.recess"],
+        "components": [
+          { "/": "/.well-known/*", "exclude": true },
+          { "/": "/privacy", "exclude": true },
+          { "/": "/terms", "exclude": true },
+          { "/": "/q/*" },
+          { "/": "/quest/*" },
+          { "/": "/u/*" },
+          { "/": "/user/*" },
+          { "/": "/*" }
+        ]
+      }
+    ]
+  }
+}

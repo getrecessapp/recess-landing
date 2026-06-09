@@ -1,0 +1,3 @@
+# Apple fetches this to verify universal links — must be application/json, no redirect.
+/.well-known/apple-app-site-association
+  Content-Type: application/json
